@@ -19,6 +19,8 @@ provider.
 halp make a tarball out of the stuff directory
 ```
 
+<img width="715" alt="Screenshot 2025-03-19 at 22 23 13" src="https://github.com/user-attachments/assets/76009b02-9a6e-447d-906d-0a150b0f27cf" />
+
 Results will stream to the terminal. If there is a command, `halp` will ask if you'd like
 to run it.
 
