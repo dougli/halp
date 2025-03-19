@@ -9,18 +9,18 @@ from rich.live import Live
 from rich.markdown import Markdown
 from rich.text import Text
 
-from halp import prompts
+from halp import env, prompts
 
 console = Console()
 
 
 async def get_command_suggestion(prompt: str) -> list[str]:
-    client = AsyncOpenAI()
+    client = AsyncOpenAI(api_key=env.HALP_API_KEY, base_url=env.HALP_BASE_URL)
 
     full_response = ""
     with Live(console=console) as live:
         response = await client.chat.completions.create(
-            model="gpt-4o",
+            model=env.HALP_MODEL,
             messages=[
                 {"role": "system", "content": prompts.SYSTEM_PROMPT},
                 {"role": "user", "content": prompt},
@@ -42,19 +42,24 @@ async def main(*args: Any):
     """
     Get help with terminal commands.
 
-    halp helps you find the right command when you've forgotten it. Simply type
-    a description of what you want to do and halp will suggest a command for you.
+    Halp helps you with terminal commands when you don't know the exact incantations.
+    Simply type a description of what you want to do and Halp will suggest a command. e.g.
 
-    For example:
+    halp how do i create a tarball out of this directory
 
-    halp how do i create a tarball out of the photos directory?
+    Results are streamed from an LLM provider. If there is a shell command within
+    the response, Halp will ask if you would like to run it.
 
-    halp will suggest a command for you.
+    By default, Halp will automatically use either `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`, with
+    OpenAI taking precedence if both are set.
+
+    You can also manually set HALP_API_KEY, HALP_BASE_URL, and HALP_MODEL.
     """
-    prompt = " ".join(str(arg) for arg in args)
+    env.check_env()
 
+    prompt = " ".join(str(arg) for arg in args)
     if not prompt:
-        print("Please provide a prompt describing the command you need.")
+        print("Please describe what you want to do.")
         return
 
     suggestion = await get_command_suggestion(prompt)

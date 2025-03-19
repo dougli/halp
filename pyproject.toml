@@ -5,6 +5,9 @@ description = "Terminal helper that leverages LLMs and suggests commands for the
 authors = ["Douglas Li <lidouglas@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "halp" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -14,6 +17,9 @@ fire = "^0.7.0"
 
 [tool.poetry.scripts]
 halp = "halp.main:entrypoint"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
 
 [build-system]
 requires = ["poetry-core"]

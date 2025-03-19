@@ -8,16 +8,29 @@ AI help with running terminal commands when you forget the exact incantations.
 pip install halp-plz
 ```
 
-You will need an `OPENAI_API_KEY` set up for this in your `.bashrc` / `.zshrc` or
-terminal environment.
+Ensure you either have `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` set. Halp will use
+whatever is available, with OpenAI taking precedence if both are set. Or, see
+the [configuration](#configuration) section if you wish to use a more exotic LLM
+provider.
 
 ## Usage
 
 ```sh
-halp list me all files that end in .py that are longer than 100 lines
+halp make a tarball out of the stuff directory
 ```
 
-Halp will provide a description and you can choose to approve or reject the command.
+Results will stream to the terminal. If there is a command, `halp` will ask if you'd like
+to run it.
+
+Halp concatenates all shell args together; this avoids the need to escape args with
+quotes in most cases, and makes it a bit easier to use.
+
+## Configuration
+
+To override the default model (either `gpt-4o` or `claude-3-7-sonnet-latest`), set
+`HALP_MODEL` to any other string.
+
+If you wish to use another API entirely, set `HALP_API_KEY`, `HALP_BASE_URL`, and `HALP_MODEL`.
 
 ## Disclaimer
 
